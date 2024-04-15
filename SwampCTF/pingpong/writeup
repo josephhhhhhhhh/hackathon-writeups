@@ -1,0 +1,11 @@
+A PCAP file with many pings. Each ICMP Ping actually contains data in the payload part of the packet.
+
+The data appears to be just numbers, letters (both capitals and lower case), and the + and / sign. The sequence ends with an ==.
+
+This appears to be a base64 encoding of data. Thus the data was pasted into a decoder.
+
+Decodes into a bunch of gibberish that contains words like "PNG", "IHDR", "Create Date" and "Modify Date". Seems like this is actually a PNG image file encoded with base64.\
+
+Converting the data from base64 to PNG solves this. 
+
+Note: The key to putting together the payloads requires manipulation of wireshark to put the relevant payload as a separate column, save that column as a CSV file, and then copying that column which basically combines the data. Remember to keep the column ordered by time.
