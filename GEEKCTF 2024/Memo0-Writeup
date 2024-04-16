@@ -1,0 +1,11 @@
+Contains a Memo0 ELF executable that needs a password to access the memos saved within.
+
+The gist is that the program is "password locked" in that to access the memo functions of the executable, you have to crack the password. Inputting the right password reveals the flag when done via netcat.
+
+The password has been stored in its encoded version. There is an encode function in this executable that encodes your input and checks it against the stored encoded password. At first I thought you could not reverse from the encoded string, because of the bit operations that would result in bit loss. WELL. Turns out that the AND operation always happens with 0x3f, which means the last 6 bits of a given string are always preserved when this operation is run. Every 3 characters (meaning 8*3 bits = 24 bits) was sliced into bits of 6 and the sliced 6 bit number would be used as an index number to pick from the encoding keyspace of "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba9876543210+/". Every 3 characters would give you 4 new characters in the encoded password.
+
+The stored password was also abit weird because it had weird symbols in it. Turns out that an entry function was running everytime the executable ran that took the stored password and increased the value of each character in the hardcoded password by 1, and then stored the new set of characters in the writable data section of memory. Looks like this might have been done to complicate the challenge a bit.
+
+Ultimately a python script could be used to obtain the index of the actual hardcoded encoded password, and the index of each character was obtained. Then you basically do a series of additions and bitshifts to add each 6 bit into the final result. Your final result can then be turned into a hexadecimal and then an ASCII equivalent of that can be generated to give you the password ("CTF_is_interesting_isn0t_it?"). Enter the password into the password challenge and the flag will be printed ("flag{U_r_th3_ma5ter_0f_ba5e64}").
+
+The key to this was realising that each new encoded character was 6 bits of the real password represented in ASCII.
