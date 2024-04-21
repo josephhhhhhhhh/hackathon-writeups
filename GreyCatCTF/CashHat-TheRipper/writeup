@@ -1,0 +1,8 @@
+Challenge: Crack a protected zip file password.
+
+Process: The name implies using tools like hashcat and JtR to complete this challenge.
+1) Generate a hash of the protected zip using zip2john
+2) Remove the file information at the start and end of the hash so that hashcat can process it
+3) Run hashcat with params `-a 0 -m 17200 ziphash.txt rockyou.txt` where attack mode 0 is a dictionary attack, and zip compression used is 17200 -> which is pkzip(compressed). Downloaded the rockyou.txt wordlist to run the dict attack.
+4) Password was 123mango. Cracked relatively quickly.
+5) The 'flag.txt' reveals the flag to be `flag{W34k_P4ssw0rds_St4Nd_n0_Ch4nc3}`.
